@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      gmail: {
+      email: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
@@ -18,7 +18,11 @@ module.exports = {
         }
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+          len: [4,50]
+        }
       },
       createdAt: {
         allowNull: false,
