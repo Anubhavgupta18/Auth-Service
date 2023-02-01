@@ -1,4 +1,5 @@
 const userRepository = require('../repository/user-repository');
+const jwt = require('jsonwebtoken');
 
 class userService{
     constructor() {
@@ -23,6 +24,7 @@ class userService{
             throw { error };
         }
     }
+    
 }
 
 module.exports = userService;
