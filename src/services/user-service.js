@@ -14,8 +14,12 @@ class userService{
             const user = await this.UserRepository.create(data);
             return user;
         } catch (error) {
+            if (error.name == 'SequelizeValidationError')
+            {
+                throw error;
+            }
             console.log('something went wrong in the service layer');
-            throw { error };
+            throw error;
         }
     }
     async destroy(userId) {
@@ -24,7 +28,7 @@ class userService{
             return true;
         } catch (error) {
             console.log('something went wrong in the service layer');
-            throw { error };
+            throw error;
         }
     }
     createToken(user) {
@@ -33,7 +37,7 @@ class userService{
             return jwtToken;
         } catch (error) {
             console.log('something went wrong in token creation');
-            throw { error };
+            throw error;
         }
     }
 
@@ -43,7 +47,7 @@ class userService{
             return response;
         } catch (error) {
             console.log('something went wrong in token validation');
-            throw { error };
+            throw error;
         }
     }
 
@@ -53,7 +57,7 @@ class userService{
             return bcrypt.compareSync(userPlainPassword, encryptedPassword);
         } catch (error) {
             console.log('something went wrong in password check');
-            throw { error };
+            throw error;
         }
     }
 
@@ -77,7 +81,7 @@ class userService{
 
         } catch (error) {
             console.log('something went wrong in signIn process');
-            throw { error };
+            throw  error;
         }
     }
     async isAuthenticated(token) {
@@ -94,7 +98,7 @@ class userService{
             return user.id;
         } catch (error) {
             console.log('something went wrong in authentication process');
-            throw { error };
+            throw error;
         }
     }
     isAdmin(userId) {
@@ -102,7 +106,7 @@ class userService{
             return this.UserRepository.isAdmin(userId);
         } catch (error) {
             console.log('something went wrong in service layer');
-            throw { error };
+            throw error;
         }
     }
 }

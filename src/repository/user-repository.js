@@ -1,4 +1,5 @@
 const { User,role } = require('../models/index');
+const ValidationError = require('../utils/error-validation');
 
 class userRepository{
     async create(data) {
@@ -6,8 +7,12 @@ class userRepository{
             const user = await User.create(data);
             return user;
         } catch (error) {
+            if (error.name == 'SequelizeValidationError')
+            {
+                throw new ValidationError(error);
+            }
             console.log('something went wrong in the repository layer');
-            throw { error };
+            throw error;
         }
     }
     async destroy(userId) {
@@ -19,7 +24,7 @@ class userRepository{
             return true;
         } catch (error) {
             console.log('something went wrong in the repository layer');
-            throw { error };
+            throw error;
         }
     }
     async getbyId(userId) {
@@ -30,7 +35,7 @@ class userRepository{
             return user;
         } catch (error) {
             console.log('something went wrong in the repository layer');
-            throw { error };
+            throw error;
         }
     }
     async getByEmail(emailId) {
@@ -43,7 +48,7 @@ class userRepository{
             return user;
         } catch (error) {
             console.log('something went wrong in the repository layer');
-            throw { error };
+            throw error;
         }
     }
 
@@ -59,7 +64,7 @@ class userRepository{
             return response;
         } catch (error) {
             console.log('something went wrong in the repository layer');
-            throw { error };
+            throw error;
         }
     }
 }

@@ -17,11 +17,11 @@ const create = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({
+        return res.status(error.statusCode).json({
             data: {},
             success: false,
-            message: 'Not able to create a User',
-            err:error
+            message: error.message,
+            err:error.explanation
         })
     }
 }
@@ -59,7 +59,7 @@ const isAuthenticated = async (req, res) => {
         return res.status(500).json({
             data: {},
             success: false,
-            message: 'User is not authenticated',
+            message: 'Not able to authenticate a user',
             err: error
         })
     }
