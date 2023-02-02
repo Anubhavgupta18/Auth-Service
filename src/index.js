@@ -2,7 +2,8 @@ const express = require('express');
 const { PORT } = require('./config/serverConfig');
 const bodyParser = require('body-parser');
 const ApiRoutes = require('./routes/index');
-
+const db = require('./models/index');
+const { User,role }=require('./models/index');
 
 const createAndStartServer = () => {
     const app = express();
@@ -12,10 +13,13 @@ const createAndStartServer = () => {
 
     app.use('/api', ApiRoutes);
 
-    app.listen(PORT, () => {
+    app.listen(PORT, async () => {
         console.log(`Server started on PORT: ${PORT}`);
+        if (process.env.DB_SYNC) {
+            db.sequelize.sync({ alter: true });
+        }
 
-    });
+});
 }
 
 createAndStartServer();
