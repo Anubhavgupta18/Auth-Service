@@ -45,8 +45,27 @@ const signin = async (req,res) => {
         })
     }
 }
-
+const isAuthenticated = async (req, res) => {
+    try {
+        const response = await User.isAuthenticated(req.headers['token']);
+        return res.status(200).json({
+            data: response,
+            message: 'User is authenticated and token is valid',
+            success: true,
+            err: {}
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            data: {},
+            success: false,
+            message: 'User is not authenticated',
+            err: error
+        })
+    }
+}
 module.exports = {
     create,
-    signin
+    signin,
+    isAuthenticated
 }

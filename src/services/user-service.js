@@ -2,6 +2,7 @@ const userRepository = require('../repository/user-repository');
 const jwt = require('jsonwebtoken');
 const { JWT_KEY } = require('../config/serverConfig');
 const bcrypt = require('bcrypt');
+const { response } = require('express');
 
 class userService{
     constructor() {
@@ -76,6 +77,23 @@ class userService{
 
         } catch (error) {
             console.log('something went wrong in signIn process');
+            throw { error };
+        }
+    }
+    async isAuthenticated(token) {
+        try {
+            const response = this.verifyToken(token);
+            if (!response) {
+                console.log('Invalid token');
+                throw { error: 'token is invalid or expired' };
+            }
+            const user = await this.UserRepository.getbyId(response.id);
+            if (!user) {
+                throw { error: 'no user with corresponding token exists' };
+            }
+            return user.id;
+        } catch (error) {
+            console.log('something went wrong in authentication process');
             throw { error };
         }
     }
